@@ -1,0 +1,19 @@
+parameters {
+
+    double AgeBaselineEmpoymentMale[AGEINT_STATE] = {
+        0, 0.45, 0.45, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0, 
+    }
+
+    double AgeBaselineEmpoymentFemale[AGEINT_STATE] = {
+        0, 0.48, 0.48, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.4, 0.4, 0, 
+    }
+
+	double	AgeBaselineUnemploymentMale[AGEINT_STATE] = {
+		0, 0.11, 0.11, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.74, 0.74, 0, 
+	};
+
+    double	AgeBaselineUnemploymentFemale[AGEINT_STATE] = {
+		0, 0.11, 0.11, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.033, 0.033, 0, 
+	};
+
+};

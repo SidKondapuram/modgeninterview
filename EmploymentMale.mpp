@@ -1,0 +1,50 @@
+//Type and parameter declaration
+parameters
+{
+    // Age baseline for first employment, the intervals are specified
+    // in PersonCore.mpp and the probability distribution in RiskPaths.dat
+    double AgeBaselineUnemploymentMale[AGEINTSTATE];
+};
+
+parameter_group P03_Employment_Male
+{
+    AgeBaselineUnemploymentMale
+};
+
+classification PARITY_STATE
+{
+    PS_EMPLOYED_MALE,
+    PS_UNEMPLOYED_MALE
+};
+
+// Actor declaration
+actor Person
+{
+    // Parity status will be derived from the state parity
+    // Instead of first state being derived we set it as employed
+    PARITY_STATE parity_status = {PS_EMPLOYED_MALE};
+
+    event timeFirstUnemploymentEvent, FirstUnemploymentEvent;
+};
+
+// Time the person is first employed
+TIME Person::timeFirstUnemploymentEvent()
+{
+    double dHazard = 0;
+    TIME event_time = TIME_INFINITE;
+    if (parity_status == PS_EMPLOYED_MALE)
+    {
+        dHazard = AgeBaselineUnemploymentMale[age_status];
+        if (dHazard > 0)
+        {
+            event_time = WAIT(-log(RandUniform(1)) / dHazard);
+        }
+    }
+    return event_time;
+}
+
+// Function to set the parity state to employed
+void Person::FirstUnemploymentEvent()
+{
+    parity_status = PS_UNEMPLOYED_MALE;
+}

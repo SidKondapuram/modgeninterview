@@ -1,0 +1,59 @@
+partition AGE_EMPLOYMENTYEARS
+{
+    15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 
+	33, 34, 35, 36, 37, 38,	39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 
+};
+
+table Person T01_LaborMarket
+{
+    {
+        unit,
+        duration(),
+        duration()/unit,
+    }
+};
+
+table Person T02_MaleUnemployment
+{
+    self_scheduling_split(age, AGE_EMPLOYMENTYEARS) *
+    {
+        transitions(parity_status, PS_EMPLOYED_MALE, PS_UNEMPLOYED_MALE) / duration(),
+        
+		transitions(parity_status, PS_EMPLOYED_MALE, PS_UNEMPLOYED_MALE) / duration(parity_status, PS_EMPLOYED_MALE)
+        
+    }
+};
+
+table Person T03_FemaleUnemployment
+{
+    self_scheduling_split(age, AGE_EMPLOYMENTYEARS) *
+    {
+        transitions(parity_status, PS_EMPLOYED_FEMALE, PS_UNEMPLOYED_FEMALE) / duration(),
+        
+		transitions(parity_status, PS_EMPLOYED_FEMALE, PS_UNEMPLOYED_FEMALE) /duration(parity_status, PS_EMPLOYED_FEMALE)
+        
+    }
+};
+
+table Person T04_MaleEmployment
+{
+    self_scheduling_split(age, AGE_EMPLOYMENTYEARS) *
+    {
+        transitions(parity_status, PS_UNEMPLOYED_MALE, PS_EMPLOYED_MALE) / duration(),
+        
+		transitions(parity_status, PS_UNEMPLOYED_MALE, PS_EMPLOYED_MALE) /duration(parity_status, PS_UNEMPLOYED_MALE)
+        
+    }
+};
+
+table Person T05_FemaleEmployment
+{
+    self_scheduling_split(age, AGE_EMPLOYMENTYEARS) *
+    {
+        transitions(parity_status, PS_UNEMPLOYED_FEMALE, PS_EMPLOYED_FEMALE) / duration(),
+        
+		transitions(parity_status, PS_UNEMPLOYED_FEMALE, PS_EMPLOYED_FEMALE) /duration(parity_status, PS_UNEMPLOYED_FEMALE)
+        
+    }
+};

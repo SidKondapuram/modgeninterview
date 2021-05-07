@@ -1,0 +1,51 @@
+// Type and parameter declaration
+parameters
+{
+    // Age baseline for first employment, the intervals are 
+    // specified in PersonCore.mpp
+    double AgeBaselineEmploymentFemale[AGEINT_STATE];
+};
+
+parameter_group P02_Unemployment_Female
+{
+    AgeBaselineEmploymentFemale
+};
+
+classification PARITY_STATE
+{
+    PS_EMPLOYED_FEMALE,
+    PS_UNEMPLOYED_FEMALE
+};
+
+// Actor declarations
+actor Person
+{
+    // Parity status will be derived from the state parity
+    // Instead of first state being derived we set it as unemployed
+    PARITY_STATE parity_status = {PS_UNEMPLOYED_FEMALE};
+
+    // First unemployment event 
+    event timeFirstEmployedEvent, FirstEmployedEvent;
+};
+
+// Time the person is first employed
+TIME Person::timeFirstEmployedEvent()
+{
+    double dHazard = 0;
+    TIME event_time = TIME_INFINITE;
+    if (parity_status == PS_UNEMPLOYED_FEMALE)
+    {
+        dHazard = AgeBaselineEmploymentFemale[age_status];
+        if (dHazard > 0)
+        {
+            event_time = WAIT(-log(RandUniform(1)) / dHazard);
+        }
+    }
+    return event_time;
+}
+
+//Function to set the parity state to employed
+void Person::FirstEmployedEvent()
+{
+    parity_status = PS_EMPLOYED_FEMALE;
+}
